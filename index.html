@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <charset="utf-8">
+    <title>Interactive Matrix Rain</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+  </head>
+  <body>
+    <div id="controller">
+      <form>
+        <div class="control">
+          <label for="interval">Interval:</label>
+          <input class="control" id="interval" type="range" min="5" max="500" step="20"
+              value="150" name="interval" title="A smaller number means faster rain.">
+        </div>
+
+        <div class="control">
+          <label for="gap">Gaps :</label>
+          <input class="control" id="gap" type="range" min="0" max="20" step="1"
+              value="0" name="gap" title="Keep low for continuous streams, or raise for gaps.">
+        </div>
+
+        <div class="control">
+          <label for="decay">Decay:</label>
+          <input class="control" id="decay" type="range" min="0" max="100" step="1"
+              value="10" name="decay" title="Keep low for bright, long-lasting streams.  High for the reverse.">
+        </div>
+
+        <div class="control">
+          <label for="afterburn">Afterburn:</label>
+          <input class="control" id="afterburn" type="range" min="0" max="40" step="1"
+          value="0" name="afterburn">
+        </div>
+      </form>
+      <div class="control label">
+        <label id="nik">Scroll to Reset. Visualizer by: <a href="www.nikpayne.com" target="_blank">Nik Payne</a>.</label><br>
+      </div>
+    </div>
+    <canvas id="canvas">
+      <p>Your browser doesn’t currently support HTML5 Canvas.
+      Please check caniuse.com/#feat=canvas for information on
+      browser support for canvas.</p>
+    </canvas>
+  </body>
+  <script type="text/javascript">
+
+  /*--- CONTROLS  ------------------------------------------------------------*/
+  var interval = 100; // (5-500) in ms, lower interval means faster rain
+  var decay_rate = 50; // (1-100) unitless.  determines how quickly chars decay onscreen
+  var max_gap = 0; // (0-20) how many vertical spaces chars can skip downscreen
+  var afterburn = 0; // (0-40) causes random chars "downstream" (upstream?) to change
+  /*--------------------------------------------------------------------------*/
+
+  __setCanvas(); // set up the canvas
+
+  function __drawFrame(reset){
+
+    __decayFrame(decay_rate); // "decay" the existing canvas with a black overlay
+
+    for(var col = 0; col < getColumns(); col++) { // iterate across the streams
+
+      __shiftUp(col, max_stream_length - 1, "characters"); // copy the body of stream "up one"
+
+      __getRandomChar(col); // front edge of stream receives a new char
+      if( Math.random() > .75) // occasionally add nuanced color
+        __drawChar(col, 2, "random" );
+      __drawChar(col, 1, "green" ); // the second character is painted green
+      __drawChar(col, 0, "white" ); // the front edge of the stream, in white
+
+      __shiftUp( col, max_stream_length - 1, "positions"); // now that they are "drawn", update positions
+
+      if( afterburn > 0 && Math.random() > .6){ // for some streams..
+        for(var j = 2 ; j < afterburn; j++){
+          if( Math.random() > .9 ) // and some chars in those streams..
+            __afterburn( col, j, [0, 0, 0, .5 * j * decay_rate/500] ); // change the char (ie, simulate "afterburn")
+        }
+      }
+      __checkPosition(col);
+      __updatePosition(col);
+    }
+  }
+
+  /* ------------------------------------------------------------------------ */
+
+
+  function animate(){
+    var altered_controls = true;
+    var resized_window = false;
+    var user_scroll = false;
+    var interval;
+    var now = new Date().getTime();
+
+    //Binding Variables Correctly
+    $('.control').on('input', function(){
+      altered_controls = true;
+    });
+    $(document).on( 'scroll', function () {
+      if (new Date().getTime() - now > 1000) {
+        console.log("Task executed once per second");
+        now = new Date().getTime();
+        __initializeStreams();
+      }
+    });
+
+    function getFrame(){
+      if(altered_controls){
+        decay_rate = parseInt(document.getElementById('decay').value);
+        interval = parseInt(document.getElementById('interval').value);
+        max_gap = parseInt(document.getElementById('gap').value);
+        afterburn = parseInt(document.getElementById('afterburn').value);
+        altered_controls = false;
+        __drawFrame(false);
+      } else {
+        __drawFrame(false);
+      }
+      setTimeout(getFrame, interval);
+    }
+    var animation = setTimeout(getFrame, interval);
+  }
+
+  animate(); // set it all in motion : )
+
+
+  /* ------------------------------------------------------------------------ */
+  </script>
+  </html>

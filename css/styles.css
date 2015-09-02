@@ -1,0 +1,74 @@
+* {
+  padding: 0;
+  margin: 0; }
+
+body {
+  background: black;
+  font-size: 16pt; }
+
+@font-face {
+  font-family: Matrix;
+  src: url(../fonts/matrix.ttf); }
+#controller {
+  background: rgba(0, 0, 0, 0.85);
+  position: fixed;
+  height: auto;
+  line-height: 2rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: .5rem;
+  text-align: left; }
+  #controller label {
+    font-size: 10pt;
+    font-family: Helvetica;
+    margin: 0 .25rem 0 .5rem;
+    color: #505050; }
+
+div.control {
+  margin: .5rem;
+  display: inline-block; }
+  div.control.label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: .5rem; }
+    div.control.label label#nik {
+      margin: 0 2rem; }
+      div.control.label label#nik a {
+        color: #787878; }
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 8rem;
+  border: 0px;
+  background-color: transparent; }
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 300px;
+  height: 3px;
+  background: #282828;
+  border: none;
+  border-radius: 3px; }
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  margin-top: -.5rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: .125rem;
+  background: #3c3c3c;
+  color: #3c3c3c; }
+
+input[type=range]:focus {
+  outline: white; }
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc; }
+
+@media screen and (max-width: 1024px) {
+  div.control.label label#nik {
+    display: none; } }
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,80 @@
+*{
+  padding: 0;
+  margin:0;
+}
+body{
+  background:black;
+  font-size: 16pt;
+}
+@font-face {
+  font-family: Matrix;
+  src: url(../fonts/matrix.ttf);
+}
+#controller{
+  background:rgba(0,0,0,.85);
+  position: fixed;
+  height: auto;
+  line-height: 2rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: .5rem;
+  text-align: left;
+  label {
+    font-size: 10pt;
+    font-family: Helvetica;
+    margin: 0 .25rem 0 .5rem;
+    color: rgba(80,80,80,1);
+  }
+}
+div.control {
+  margin: .5rem;
+  display: inline-block;
+  &.label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: .5rem;
+    label#nik {
+      margin: 0 2rem;
+      a {
+        color: rgba(120,120,120,1);
+      }
+    }
+  }
+}
+input[type=range] {
+  -webkit-appearance: none;
+  width: 8rem;
+  border: 0px;
+  background-color: transparent;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 300px;
+  height: 3px;
+  background: rgba(40,40,40,1);
+  border: none;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  margin-top: -.5rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: .125rem;
+  background: rgba(60,60,60,1);
+  color: rgba(60,60,60,1);
+}
+input[type=range]:focus {
+  outline: white;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #ccc;
+}
+
+@media screen and (max-width: 1024px){
+  div.control.label {
+    label#nik { display: none; }
+  }
+}
